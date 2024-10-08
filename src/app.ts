@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
-import { start } from "./database/database";
+import { connectDB } from "./database/database";
+import { UserController } from "./modules/user/User.controller";
 
 
 export const app = express();
@@ -15,11 +16,10 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ==== Routes ==== //
-
-app.get('/', (req, res) => {
-    res.json({message: "Server works"});
-})
 
 // ==== DataBase Call ==== //
-start();
+connectDB();
+
+
+// ==== Routes ==== //
+app.use('/auth', UserController);
