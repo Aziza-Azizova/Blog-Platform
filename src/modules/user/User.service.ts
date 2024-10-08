@@ -15,8 +15,8 @@ function generateAccessToken(id: unknown, roles: UserRole) {
     return jwt.sign(payload, jwtKey, { expiresIn: "1h" });
 }
 
-export class UserServices {
-    static async registration(req: Request, res: Response) {
+export class UserService {
+    static async register(req: Request, res: Response) {
         const { email, username, password } = req.body;
         const existingEmail = await User.findOne({ email });
         if (existingEmail) {
