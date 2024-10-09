@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 const jwtKey = process.env.JWT_SECRET_KEY;
 
-function generateAccessToken(id: unknown, roles: UserRole) {
+export function generateAccessToken(id: unknown, roles: UserRole) {
     const payload = {
         id,
         roles

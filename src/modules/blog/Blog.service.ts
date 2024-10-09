@@ -80,6 +80,7 @@ export class BlogService {
         const blogs = await Blog.find().skip(startIndex).limit(limit);
 
         return res.status(200).json({
+            message: "Successfully fetched all blog posts",
             page,
             limit,
             totalBlogs,
