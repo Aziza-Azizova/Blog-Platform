@@ -2,10 +2,14 @@ import express from "express";
 import cors from "cors";
 import { connectDB } from "./database/database";
 import { UserController } from "./modules/user/User.controller";
-import { BlogController } from "./modules/blog/Blog.controller";
+import { PostController } from "./modules/post/Post.controller";
+import { errorHandler } from "./shared/exceptions/errorHandler";
 
 
 export const app = express();
+
+// ==== DataBase Call ==== //
+connectDB();
 
 // ==== Middlewares ==== //
 app.use(
@@ -18,10 +22,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
-// ==== DataBase Call ==== //
-connectDB();
-
-
 // ==== Routes ==== //
 app.use('/auth', UserController);
-app.use('/blogs', BlogController);
+app.use('/blogs', PostController);
+
+
+// ==== Handle Error Middlewares ==== //
+app.use(errorHandler);

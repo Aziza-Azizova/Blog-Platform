@@ -1,7 +1,7 @@
 import { Schema } from "mongoose";
 import { Document } from "mongoose";
 
-export interface IBlog extends Document {
+export interface IPost extends Document {
   author_id: Schema.Types.ObjectId;
   title: string;
   content: string;
