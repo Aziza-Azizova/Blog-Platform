@@ -32,7 +32,7 @@ describe("Blog post management", () => {
     });
 
     afterEach(async () => {
-        await mongoose.connection.collection('blogs').deleteMany({});
+        await mongoose.connection.collection('posts').deleteMany({});
     });
 
     
