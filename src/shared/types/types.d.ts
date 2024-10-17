@@ -1,4 +1,4 @@
-import { IUser } from "#/modules/user/User.type";
+import { IUser } from "#/modules/auth/Auth.type";
 
 declare global {
     namespace Express {

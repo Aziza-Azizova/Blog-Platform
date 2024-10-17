@@ -4,8 +4,8 @@ import dotenv from 'dotenv';
 
 import { app } from "../app";
 import { MongoMemoryServer } from 'mongodb-memory-server';
-import { UserRole } from "../modules/user/User.model";
-import { generateAccessToken } from "../modules/user/User.service";
+import { UserRole } from "../modules/auth/Auth.model";
+import { generateAccessToken } from "../modules/auth/Auth.service";
 
 dotenv.config();
 let mongoServer: MongoMemoryServer;

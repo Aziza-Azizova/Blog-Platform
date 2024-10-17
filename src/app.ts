@@ -1,11 +1,11 @@
-import { BadRequestError } from './shared/exceptions/errors';
 import express from "express";
 import cors from "cors";
 import { connectDB } from "./database/database";
-import { UserController } from "./modules/user/User.controller";
+import { AuthController } from "./modules/auth/Auth.controller";
 import { PostController } from "./modules/post/Post.controller";
 import { errorHandler } from "./shared/exceptions/errorHandler";
 import { CommentController } from "./modules/comment/Comment.controller";
+import { UserController } from "./modules/user/User.controller";
 
 
 export const app = express();
@@ -25,7 +25,8 @@ app.use(express.urlencoded({ extended: true }));
 
 
 // ==== Routes ==== //
-app.use('/auth', UserController);
+app.use('/auth', AuthController);
+app.use('/user', UserController);
 app.use('/blogs', PostController);
 app.use('/blogs', CommentController);
 
