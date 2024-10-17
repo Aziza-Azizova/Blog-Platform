@@ -62,7 +62,16 @@ export class PostService {
         const limit = parseInt(req.query['limit'] as string) || 10;
 
         const startIndex = (page - 1) * limit;
-        const posts = await Post.find().skip(startIndex).limit(limit);
+        
+        const { title, content, tags } = req.query;
+        
+        const searchQuery: any = {};
+
+        if (tags) searchQuery.tags = { $eq: tags };
+        if (title) searchQuery.title = { $regex: title, $options: 'i' };
+        if (content) searchQuery.content = { $regex: content };
+        
+        const posts = await Post.find(searchQuery).skip(startIndex).limit(limit);
 
         return posts;
     }

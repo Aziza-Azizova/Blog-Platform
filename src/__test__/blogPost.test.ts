@@ -35,7 +35,7 @@ describe("Blog post management", () => {
         await mongoose.connection.collection('posts').deleteMany({});
     });
 
-    
+
     it("should return 201 status and create a new post", async () => {
         const res = await supertest(app)
             .post('/blogs')
@@ -52,9 +52,40 @@ describe("Blog post management", () => {
     });
 
 
-    it("should return 200 status and get all posts with pagination", async () => {
+    it("should return 200 status and get all posts", async () => {
         const res = await supertest(app)
             .get('/blogs')
+            .set('Authorization', `Bearer ${token}`)
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('Successfully fetched all posts');
+        expect(res.body.posts).toBeDefined();
+    });
+
+
+    it("should return 200 status and get all posts with pagination", async () => {
+        const res = await supertest(app)
+            .get('/blogs?page=2&limit=5')
+            .set('Authorization', `Bearer ${token}`)
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe('Successfully fetched all posts');
+        expect(res.body.posts).toBeDefined();
+    });
+
+
+    it("should return posts matching the search query for title", async () => {
+        await supertest(app)
+            .post('/blogs')
+            .set('Authorization', `Bearer ${token}`)
+            .send({
+                title: 'Express.js',
+                content: 'Example content',
+                tags: ['tag1', 'tag2', 'tag3']
+            });
+
+        const res = await supertest(app)
+            .get('/blogs?title=express.js')
             .set('Authorization', `Bearer ${token}`)
 
         expect(res.statusCode).toBe(200);
