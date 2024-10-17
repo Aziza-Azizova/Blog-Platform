@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { ZodError } from 'zod';
-import { ConflictError, ForbiddenError, NotFoundError, UnauthorizedError } from './errors';
+import { BadRequestError, ConflictError, ForbiddenError, NotFoundError, UnauthorizedError } from './errors';
 
 export function errorHandler(error: unknown, req: Request, res: Response, next: NextFunction) {
     const status = res.statusCode === 200 ? 500 : res.statusCode;
@@ -18,6 +18,9 @@ export function errorHandler(error: unknown, req: Request, res: Response, next: 
         return res.status(error.status).json({ message: error.message });
 
     } else if (error instanceof ForbiddenError) {
+        return res.status(error.status).json({ message: error.message });
+
+    } else if (error instanceof BadRequestError) {
         return res.status(error.status).json({ message: error.message });
 
     } else if (error instanceof Error) {
