@@ -1,6 +1,6 @@
 import { Model, Schema, model } from "mongoose";
 import { hash, compare } from 'bcryptjs'
-import { IUser, UserMethods } from "./User.type";
+import { IUser, UserMethods } from "./Auth.type";
 
 export enum UserRole {
     ADMIN = "admin",

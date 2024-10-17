@@ -1,4 +1,4 @@
-import { UserRole } from "#/modules/user/User.model";
+import { UserRole } from "#/modules/auth/Auth.model";
 import { Document } from "mongoose";
 
 export interface IUser extends Document {

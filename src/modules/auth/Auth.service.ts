@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { User, UserRole } from "./User.model";
+import { User, UserRole } from "./Auth.model";
 import jwt from "jsonwebtoken";
 import dotenv from 'dotenv';
-import { IUser } from "./User.type";
+import { IUser } from "./Auth.type";
 import { ConflictError, NotFoundError, UnauthorizedError } from "../../shared/exceptions/errors";
 
 dotenv.config();
@@ -17,7 +17,7 @@ export function generateAccessToken(id: unknown, roles: UserRole) {
     return jwt.sign(payload, jwtKey, { expiresIn: "1h" });
 }
 
-export class UserService {
+export class AuthService {
 
     static async register(req: Request, res: Response) {
         const { email, username, password } = req.body;

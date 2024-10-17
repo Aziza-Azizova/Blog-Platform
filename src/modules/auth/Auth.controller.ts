@@ -1,17 +1,17 @@
 import { Router } from "express";
-import { userLoginDtoSchema, userSignupDtoSchema } from "./dto/user-auth.dto";
-import { UserService } from "./User.service";
+import { userLoginDtoSchema, userSignupDtoSchema } from "./dto/auth.dto";
+import { AuthService } from "./Auth.service";
 import { validate } from "../../shared/validators/validator";
 
 
-export const UserController = Router();
+export const AuthController = Router();
 
-UserController.post(
+AuthController.post(
     '/signup',
     validate(userSignupDtoSchema),
     async (req, res, next) => {
         try {
-            const user = await UserService.register(req, res);
+            const user = await AuthService.register(req, res);
 
             return res.status(201).json({
                 message: "User successfully registered",
@@ -23,12 +23,12 @@ UserController.post(
     }
 );
 
-UserController.post(
+AuthController.post(
     '/login',
     validate(userLoginDtoSchema),
     async (req, res, next) => {
         try {
-            const { user, token } = await UserService.login(req, res);
+            const { user, token } = await AuthService.login(req, res);
 
             return res.status(200).json({
                 message: "User successfully logged in",
