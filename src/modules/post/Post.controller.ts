@@ -70,3 +70,29 @@ PostController.delete("/:id", authTokenMiddleware, async (req, res, next) => {
         next(error);
     }
 });
+
+PostController.post("/:id/like", authTokenMiddleware, async (req, res, next) => {
+    try {
+        const post = await PostService.like(req);
+
+        return res.status(200).json({
+            message: "Post liked successfully",
+            post,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
+PostController.post("/:id/dislike", authTokenMiddleware, async (req, res, next) => {
+    try {
+        const post = await PostService.dislike(req);
+
+        return res.status(200).json({
+            message: "Post disliked successfully",
+            post,
+        });
+    } catch (error) {
+        next(error);
+    }
+});

@@ -6,6 +6,7 @@ export interface IPost extends Document {
     title: string;
     content: string;
     tags: string[];
+    likes: { userId: Schema.Types.ObjectId }[];
     created_at: Date;
     updated_at: Date;
 }

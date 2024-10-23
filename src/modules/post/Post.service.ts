@@ -81,4 +81,36 @@ export class PostService {
 
         return post;
     }
+
+    static async like(req: Request) {
+        const userId = req.user?.id;
+        const postId = req.params['id'];
+
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFoundError("Post not found");
+
+        const liked = post.likes.some(like => like.userId.toString() === userId);
+        if (!liked) {
+            post.likes.push({ userId });
+        }
+
+        await post.save();
+        return post;
+    }
+
+    static async dislike(req: Request) {
+        const userId = req.user?.id;
+        const postId = req.params['id'];
+
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFoundError("Post not found");
+
+        const liked = post.likes.some(like => like.userId.toString() === userId);
+        if (liked) {
+            post.likes = post.likes.filter(like => like.userId.toString() !== userId);
+        }
+
+        await post.save();
+        return post;
+    }
 }

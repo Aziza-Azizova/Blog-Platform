@@ -139,6 +139,46 @@ describe("Blog post management", () => {
         expect(res.body.post).toBeDefined();
     });
 
+    it("should return 200 status and like post by ID", async () => {
+        const createBlogRes = await supertest(app)
+            .post("/blogs")
+            .set("Authorization", `Bearer ${token}`)
+            .send({
+                title: "Example title",
+                content: "Example content",
+                tags: ["tag1", "tag2", "tag3"],
+            });
+        postId = createBlogRes.body.post._id.toString();
+
+        const res = await supertest(app)
+            .post(`/blogs/${postId}/like`)
+            .set("Authorization", `Bearer ${token}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe("Post liked successfully");
+        expect(res.body.post).toBeDefined();
+    });
+
+    it("should return 200 status and dislike post by ID", async () => {
+        const createBlogRes = await supertest(app)
+            .post("/blogs")
+            .set("Authorization", `Bearer ${token}`)
+            .send({
+                title: "Example title",
+                content: "Example content",
+                tags: ["tag1", "tag2", "tag3"],
+            });
+        postId = createBlogRes.body.post._id.toString();
+
+        const res = await supertest(app)
+            .post(`/blogs/${postId}/dislike`)
+            .set("Authorization", `Bearer ${token}`);
+
+        expect(res.statusCode).toBe(200);
+        expect(res.body.message).toBe("Post disliked successfully");
+        expect(res.body.post).toBeDefined();
+    });
+
     afterAll(async () => {
         await mongoose.connection.close();
         await mongoServer.stop();
