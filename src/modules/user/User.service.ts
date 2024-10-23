@@ -1,54 +1,53 @@
 import { Request, Response } from "express";
-import { User, UserRole } from "./User.model";
-import jwt from "jsonwebtoken";
-import dotenv from 'dotenv';
-import { IUser } from "./User.type";
-import { ConflictError, NotFoundError, UnauthorizedError } from "../../shared/exceptions/errors";
-
-dotenv.config();
-const jwtKey = process.env.JWT_SECRET_KEY;
-
-export function generateAccessToken(id: unknown, roles: UserRole) {
-    const payload = {
-        id,
-        roles
-    }
-
-    return jwt.sign(payload, jwtKey, { expiresIn: "1h" });
-}
+import { User, UserRole } from "../auth/Auth.model";
+import { ForbiddenError, NotFoundError } from "../../shared/exceptions/errors";
+import { UserProfileDto } from "./dto/user-profile.dto";
 
 export class UserService {
 
-    static async register(req: Request, res: Response) {
-        const { email, username, password } = req.body;
+    static async showProfile(req: Request, res: Response) {
+        const userId = req.user?.id;
+        const user = await User.findById(userId);
 
-        const existingEmail = await User.findOne({ email });
-        if (existingEmail) {
-            throw new ConflictError('Email already exists');
-        }
+        if (!user) throw new NotFoundError("User does not exist");
+        const userData = { username: user.username, email: user.email };
 
-        const newUser = new User({ email, username, password });
-        await newUser.save();
-        return newUser;
+        return userData;
     }
 
+    static async updateProfile(req: Request, res: Response) {
+        const userId = req.user?.id;
+        const user = await User.findById(userId);
 
+        if (!user) throw new NotFoundError("User does not exist");
 
-    static async login(req: Request, res: Response): Promise<{ user: IUser, token: string }> {
-        const { email, password } = req.body;
+        const { email, username, password }: UserProfileDto = req.body;
 
-        const registeredUser = await User.findOne({ email });
-        if (!registeredUser) {
-            throw new NotFoundError('User not found');
-        }
+        user.email = email || user.email;
+        user.username = username || user.username;
+        user.password = password || user.password;
+        await user.save();
 
-        const isValidUserPassword = await registeredUser.isValidPassword(password);
-        if (!isValidUserPassword) {
-            throw new UnauthorizedError('Wrong password');
-        }
+        return user;
+    }
 
-        const token = generateAccessToken(registeredUser._id, registeredUser.roles)
+    static async updateUserRole(req: Request, res: Response) {
+        const userId = req.user?.id;
+        const user = await User.findById(userId);
 
-        return { user: registeredUser, token };
+        if (!user) throw new NotFoundError("User does not exist");
+        if (user.roles !== UserRole.ADMIN) throw new ForbiddenError("Only admin can update user role");
+
+        const { id } = req.params;
+        const userToUpdate = await User.findById(id);
+        if (!userToUpdate) throw new NotFoundError("User not found");
+
+        const { roles } = req.body;
+
+        userToUpdate.roles = roles || userToUpdate.roles
+
+        await userToUpdate.save();
+
+        return userToUpdate;
     }
 }
