@@ -1,45 +1,31 @@
 {
-  "compilerOptions": {
-    "types": [
-      "jest",
-      "node"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "src/shared/types"
-    ],
-    "target": "ES2022",
-    "lib": [
-      "ESNext"
-    ],
-    "module": "ES2022",
-    "moduleResolution": "Bundler",
-    "rootDir": "./src",
-    "baseUrl": "./src",
-    "paths": {
-      "#/*": [
-        "*"
-      ]
+    "compilerOptions": {
+        "types": ["jest", "node"],
+        "typeRoots": ["./node_modules/@types", "src/shared/types"],
+        "target": "ES2022",
+        "lib": ["ESNext"],
+        "module": "ES2022",
+        "moduleResolution": "Bundler",
+        "rootDir": "./src",
+        "baseUrl": "./src",
+        "paths": {
+            "#/*": ["*"]
+        },
+        "resolveJsonModule": true,
+        "declaration": true,
+        "declarationMap": true,
+        "sourceMap": true,
+        "outDir": "./build",
+        "removeComments": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "useUnknownInCatchVariables": true,
+        "noFallthroughCasesInSwitch": true,
+        "noUncheckedIndexedAccess": true,
+        "noPropertyAccessFromIndexSignature": true,
+        "skipLibCheck": true
     },
-    "resolveJsonModule": true,
-    "declaration": true,
-    "declarationMap": true,
-    "sourceMap": true,
-    "outDir": "./build",
-    "removeComments": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "useUnknownInCatchVariables": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "skipLibCheck": true
-  },
-  "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }

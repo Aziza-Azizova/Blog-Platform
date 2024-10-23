@@ -8,7 +8,6 @@ export const postDtoSchema = z.object({
 
 export type PostDto = z.infer<typeof postDtoSchema>;
 
-
 export const updatePostDtoSchema = z.object({
     title: z.string().optional(),
     content: z.string().optional(),

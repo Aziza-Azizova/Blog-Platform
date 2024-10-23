@@ -1,9 +1,8 @@
 import { Schema, model } from "mongoose";
 import { IPost } from "./Post.type";
 
-
 const postSchema = new Schema<IPost>({
-    author_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    author_id: { type: Schema.Types.ObjectId, ref: "User", required: true },
     title: { type: String, required: true },
     content: { type: String, required: true },
     tags: { type: [String] },

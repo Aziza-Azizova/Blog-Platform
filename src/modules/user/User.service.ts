@@ -1,11 +1,10 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { User, UserRole } from "../auth/Auth.model";
 import { ForbiddenError, NotFoundError } from "../../shared/exceptions/errors";
 import { UserProfileDto } from "./dto/user-profile.dto";
 
 export class UserService {
-
-    static async showProfile(req: Request, res: Response) {
+    static async showProfile(req: Request) {
         const userId = req.user?.id;
         const user = await User.findById(userId);
 
@@ -15,7 +14,7 @@ export class UserService {
         return userData;
     }
 
-    static async updateProfile(req: Request, res: Response) {
+    static async updateProfile(req: Request) {
         const userId = req.user?.id;
         const user = await User.findById(userId);
 
@@ -31,7 +30,7 @@ export class UserService {
         return user;
     }
 
-    static async updateUserRole(req: Request, res: Response) {
+    static async updateUserRole(req: Request) {
         const userId = req.user?.id;
         const user = await User.findById(userId);
 
@@ -44,7 +43,7 @@ export class UserService {
 
         const { roles } = req.body;
 
-        userToUpdate.roles = roles || userToUpdate.roles
+        userToUpdate.roles = roles || userToUpdate.roles;
 
         await userToUpdate.save();
 

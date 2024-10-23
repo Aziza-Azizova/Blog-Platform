@@ -7,4 +7,3 @@ export const userProfileDtoSchema = z.object({
 });
 
 export type UserProfileDto = z.infer<typeof userProfileDtoSchema>;
-

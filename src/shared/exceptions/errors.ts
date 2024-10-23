@@ -4,10 +4,9 @@ export class NotFoundError extends Error {
     constructor(message: string) {
         super(message);
         this.status = 404;
-        this.name = 'NotFoundError';
+        this.name = "NotFoundError";
     }
 }
-
 
 export class UnauthorizedError extends Error {
     public status: number;
@@ -15,36 +14,33 @@ export class UnauthorizedError extends Error {
     constructor(message: string) {
         super(message);
         this.status = 401;
-        this.name = 'Unauthorized';
+        this.name = "Unauthorized";
     }
 }
-
 
 export class ConflictError extends Error {
     public status: number;
     constructor(message: string) {
         super(message);
         this.status = 409;
-        this.name = 'ConflictError';
+        this.name = "ConflictError";
     }
 }
-
 
 export class ForbiddenError extends Error {
     public status: number;
     constructor(message: string) {
         super(message);
         this.status = 403;
-        this.name = 'ForbiddenError';
+        this.name = "ForbiddenError";
     }
 }
-
 
 export class BadRequestError extends Error {
     public status: number;
     constructor(message: string) {
         super(message);
         this.status = 400;
-        this.name = 'BadRequestError';
+        this.name = "BadRequestError";
     }
 }
