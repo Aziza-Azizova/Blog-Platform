@@ -34,7 +34,7 @@ PostController.get("/", authTokenMiddleware, async (req, res, next) => {
 
 PostController.get("/:id", authTokenMiddleware, async (req, res, next) => {
     try {
-        const post = await PostService.getById(req, res);
+        const post = await PostService.getById(req);
 
         return res.status(200).json({
             message: "Post found successfully",

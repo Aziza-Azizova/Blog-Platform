@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { PostDto } from "./dto/blog-post.dto";
 import { Post } from "./Post.model";
 import mongoose from "mongoose";
@@ -72,11 +72,11 @@ export class PostService {
         return posts;
     }
 
-    static async getById(req: Request, res: Response) {
+    static async getById(req: Request) {
         const { id } = req.params;
         const post = await Post.findOne({ _id: id });
         if (!post) {
-            return res.status(404).json({ message: "Post not found" });
+            throw new NotFoundError("Post not found");
         }
 
         return post;
@@ -84,7 +84,7 @@ export class PostService {
 
     static async like(req: Request) {
         const userId = req.user?.id;
-        const postId = req.params['id'];
+        const postId = req.params["id"];
 
         const post = await Post.findById(postId);
         if (!post) throw new NotFoundError("Post not found");
@@ -100,7 +100,7 @@ export class PostService {
 
     static async dislike(req: Request) {
         const userId = req.user?.id;
-        const postId = req.params['id'];
+        const postId = req.params["id"];
 
         const post = await Post.findById(postId);
         if (!post) throw new NotFoundError("Post not found");

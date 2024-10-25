@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import supertest from "supertest";
 import dotenv from "dotenv";
 
-import { app } from "../app";
+import { app } from "../../app";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { User, UserRole } from "../modules/auth/Auth.model";
-import { generateAccessToken } from "../modules/auth/Auth.service";
+import { User, UserRole } from "../../modules/auth/Auth.model";
+import { generateAccessToken } from "../../modules/auth/Auth.service";
 
 dotenv.config();
 let mongoServer: MongoMemoryServer;

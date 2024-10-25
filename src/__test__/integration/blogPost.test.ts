@@ -2,10 +2,10 @@ import mongoose from "mongoose";
 import supertest from "supertest";
 import dotenv from "dotenv";
 
-import { app } from "../app";
+import { app } from "../../app";
 import { MongoMemoryServer } from "mongodb-memory-server";
-import { UserRole } from "../modules/auth/Auth.model";
-import { generateAccessToken } from "../modules/auth/Auth.service";
+import { UserRole } from "../../modules/auth/Auth.model";
+import { generateAccessToken } from "../../modules/auth/Auth.service";
 
 dotenv.config();
 let mongoServer: MongoMemoryServer;
@@ -150,9 +150,7 @@ describe("Blog post management", () => {
             });
         postId = createBlogRes.body.post._id.toString();
 
-        const res = await supertest(app)
-            .post(`/blogs/${postId}/like`)
-            .set("Authorization", `Bearer ${token}`);
+        const res = await supertest(app).post(`/blogs/${postId}/like`).set("Authorization", `Bearer ${token}`);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe("Post liked successfully");
@@ -170,9 +168,7 @@ describe("Blog post management", () => {
             });
         postId = createBlogRes.body.post._id.toString();
 
-        const res = await supertest(app)
-            .post(`/blogs/${postId}/dislike`)
-            .set("Authorization", `Bearer ${token}`);
+        const res = await supertest(app).post(`/blogs/${postId}/dislike`).set("Authorization", `Bearer ${token}`);
 
         expect(res.statusCode).toBe(200);
         expect(res.body.message).toBe("Post disliked successfully");
