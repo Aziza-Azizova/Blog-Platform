@@ -1,39 +1,40 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { CommentDto } from "./dto/comment.dto";
 import { Comment } from "./Comment.model";
 import { ForbiddenError, NotFoundError } from "../../shared/exceptions/errors";
 import sanitize from "sanitize-html";
 import { Post } from "../post/Post.model";
 
-
 export class CommentService {
-    
     static async create(req: Request) {
         const { content }: CommentDto = req.body;
         const sanitizedContent = sanitize(content);
         const authorId = req.user?.id;
 
         const { id } = req.params;
-        if(!id){
+        if (!id) {
             throw new NotFoundError("Post ID required");
         }
 
-        const post = await Post.findOne({_id: id});
-        if(!post){
+        const post = await Post.findOne({ _id: id });
+        if (!post) {
             throw new NotFoundError("Post not found");
         }
 
-        const newComment = new Comment({ post_id: id, user_id: authorId, content: sanitizedContent });
+        const newComment = new Comment({
+            post_id: id,
+            user_id: authorId,
+            content: sanitizedContent,
+        });
         await newComment.save();
 
         return newComment;
     }
 
-
-    static async update(req: Request, res: Response) {
+    static async update(req: Request) {
         const { id, commentId } = req.params;
         const post = await Post.findOne({ _id: id });
-        if(!post){
+        if (!post) {
             throw new NotFoundError("Post not found");
         }
 
@@ -55,11 +56,10 @@ export class CommentService {
         return comment;
     }
 
-
-    static async delete(req: Request, res: Response) {
+    static async delete(req: Request) {
         const { id, commentId } = req.params;
         const post = await Post.findOne({ _id: id });
-        if(!post){
+        if (!post) {
             throw new NotFoundError("Post not found");
         }
 
@@ -77,11 +77,10 @@ export class CommentService {
         return comment;
     }
 
-
-    static async get(req: Request, res: Response) {
+    static async get(req: Request) {
         const { id } = req.params;
         const post = await Post.findOne({ _id: id });
-        if(!post){
+        if (!post) {
             throw new NotFoundError("Post not found");
         }
 

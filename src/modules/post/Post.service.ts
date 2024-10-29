@@ -1,14 +1,13 @@
-import { Request, Response } from "express";
+import { Request } from "express";
 import { PostDto } from "./dto/blog-post.dto";
 import { Post } from "./Post.model";
 import mongoose from "mongoose";
 import { ForbiddenError, NotFoundError } from "../../shared/exceptions/errors";
 
-
 export class PostService {
     static async create(req: Request) {
         const { title, content, tags }: PostDto = req.body;
-        const author = req.user?.id
+        const author = req.user?.id;
 
         const newPost = new Post({ author_id: author, title, content, tags });
         await newPost.save();
@@ -16,8 +15,7 @@ export class PostService {
         return newPost;
     }
 
-
-    static async update(req: Request, res: Response) {
+    static async update(req: Request) {
         const { id } = req.params;
         const post = await Post.findById(id);
         if (!post) {
@@ -38,8 +36,7 @@ export class PostService {
         return post;
     }
 
-
-    static async delete(req: Request, res: Response) {
+    static async delete(req: Request) {
         const { id } = req.params;
         const objId = new mongoose.Types.ObjectId(id);
         const post = await Post.findById(objId);
@@ -56,34 +53,64 @@ export class PostService {
         return post;
     }
 
-
     static async get(req: Request) {
-        const page = parseInt(req.query['page'] as string) || 1;
-        const limit = parseInt(req.query['limit'] as string) || 10;
+        const page = parseInt(req.query["page"] as string) || 1;
+        const limit = parseInt(req.query["limit"] as string) || 10;
 
         const startIndex = (page - 1) * limit;
-        
+
         const { title, content, tags } = req.query;
-        
+
         const searchQuery: any = {};
 
         if (tags) searchQuery.tags = { $eq: tags };
-        if (title) searchQuery.title = { $regex: title, $options: 'i' };
+        if (title) searchQuery.title = { $regex: title, $options: "i" };
         if (content) searchQuery.content = { $regex: content };
-        
+
         const posts = await Post.find(searchQuery).skip(startIndex).limit(limit);
 
         return posts;
     }
 
-
-    static async getById(req: Request, res: Response) {
+    static async getById(req: Request) {
         const { id } = req.params;
         const post = await Post.findOne({ _id: id });
         if (!post) {
-            return res.status(404).json({ message: "Post not found" })
+            throw new NotFoundError("Post not found");
         }
 
+        return post;
+    }
+
+    static async like(req: Request) {
+        const userId = req.user?.id;
+        const postId = req.params["id"];
+
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFoundError("Post not found");
+
+        const liked = post.likes.some(like => like.userId.toString() === userId);
+        if (!liked) {
+            post.likes.push({ userId });
+        }
+
+        await post.save();
+        return post;
+    }
+
+    static async dislike(req: Request) {
+        const userId = req.user?.id;
+        const postId = req.params["id"];
+
+        const post = await Post.findById(postId);
+        if (!post) throw new NotFoundError("Post not found");
+
+        const liked = post.likes.some(like => like.userId.toString() === userId);
+        if (liked) {
+            post.likes = post.likes.filter(like => like.userId.toString() !== userId);
+        }
+
+        await post.save();
         return post;
     }
 }

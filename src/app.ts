@@ -7,7 +7,6 @@ import { errorHandler } from "./shared/exceptions/errorHandler";
 import { CommentController } from "./modules/comment/Comment.controller";
 import { UserController } from "./modules/user/User.controller";
 
-
 export const app = express();
 
 // ==== DataBase Call ==== //
@@ -15,21 +14,19 @@ connectDB();
 
 // ==== Middlewares ==== //
 app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
-  })
+    cors({
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+    }),
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-
 // ==== Routes ==== //
-app.use('/auth', AuthController);
-app.use('/user', UserController);
-app.use('/blogs', PostController);
-app.use('/blogs', CommentController);
-
+app.use("/auth", AuthController);
+app.use("/user", UserController);
+app.use("/blogs", PostController);
+app.use("/blogs", CommentController);
 
 // ==== Handle Error Middlewares ==== //
 app.use(errorHandler);
