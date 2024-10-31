@@ -34,7 +34,7 @@ jobs:
               run: npm run test
               env:
                   CI: true
-                  MONGO_URI: ${{ secrets.MONGODB_URI }}
+                  MONGODB_URI: ${{ secrets.MONGODB_URI }}
 
             - name: Build the project
               run: npm run build
