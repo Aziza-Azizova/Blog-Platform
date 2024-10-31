@@ -1,0 +1,41 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=${MONGODB_URI}
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  app_dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: build
+    ports:
+      - "5001:5000"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=${MONGODB_URI}
+      - PORT=5000
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - mongo
+    command: npm run dev
+
+volumes:
+  mongo_data:
