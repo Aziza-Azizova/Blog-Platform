@@ -35,6 +35,7 @@ jobs:
               env:
                   CI: true
                   MONGODB_URI: ${{ secrets.MONGODB_URI }}
+                  JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
 
             - name: Build the project
               run: npm run build
